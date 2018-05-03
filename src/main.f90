@@ -7,12 +7,12 @@ program main
   use saver
   use transform
   implicit none
-  ! Plot values: 1=velocity, 2=pressure, 3=density 4=Mach number
-  integer,parameter :: n_x = 51, n_y = 51, n_z = 5, SAVE=1,PLOT=1,PLOTVAL=5,VIDEO=0, QUIET=0
-  real, parameter :: starty = 0, endy = 1.0, startx = 0, endx = 1.0, startz = 0, endz = 1.0, gamma = 1.4
+  ! Plot values: 1=u vel, 2=v vel, 3=w vel, 4=p, 5=rho
+  integer,parameter :: n_x = 37, n_y = 37, n_z = 25, SAVE=1,PLOT=1,PLOTVAL=4,VIDEO=0, QUIET=0, VISCOUS=0
+  real, parameter :: starty = 0, endy = 1.5, startx = 0, endx = 1.5, startz = 0, endz = 1.0, gamma = 1.4
   real :: delx,dely,delz,dt,cfl,tend,lambda_0,t,dt_0,lambda,delta,Re,Suth,residual,Cv
   real :: Pr
-  integer :: I,id=0,check,case_id=4,skips=50
+  integer :: I,id=0,check,case_id=2,skips=25
   real,dimension(n_x,n_y,n_z) :: a_0,p,rho,u,v,w,E,a                             ! Stores x coordinate of the points, primitive values
   real,dimension(n_x) :: x
   real,dimension(n_y) :: y

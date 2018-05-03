@@ -25,53 +25,20 @@ subroutine set_boundary(q,x,y,z,n_x,n_y,n_z,Cv,case_id)
     q(:,:,n_z,:)=q(:,:,n_z-1,:)
     skipend = 1
 
-  ! case(2)              ! Poissuelli Flow
-  !   ! Inflow
-  !   u(1,:) = (COS(PI*y(:)))**2
-  !   v(1,:) = 0
-  !   E(1,:) = 1.0/(gamma-1.0) + 0.5 * u(1,:) * u(1,:)
-  !
-  !   ! Walls
-  !   u(:,n_y) = 0
-  !   v(:,n_y) = 0
-  !   E(:,n_y) = 1.0/(gamma-1.0)
-  !
-  !   u(:,1) = 0
-  !   v(:,1) = 0
-  !   E(:,1) = 1.0/(gamma-1.0)
-  !
-  !   ! Outflow
-  !   E(n_x,:) = 1.0/((gamma-1.0)*rho(n_x,:)) + 0.5*(u(n_x,:)**2 + v(n_x,:)**2)
-  !
-  ! case(3)               ! Flat plat boundary layer
-  !   ! Inflow
-  !   rho(1,:) = 1.0
-  !   u(1,:) = 1.0
-  !   v(1,:) = 0
-  !   p(1,:) = 1.0
-  !
-  !   ! Upper Wall
-  !   rho(:,n_y) = 1.0
-  !   ! u(:,n_y) = 1.0
-  !   ! v(:,n_y) = 0
-  !   p(:,n_y) = 1.0
-  !
-  !   ! Lower wall
-  !
-  !   temp = NINT(0.1*n_x)
-  !   u(1:temp,1) = u(1:temp,2)
-  !   u(temp+1:n_x,1) = -1.0 * u(temp+1:n_x,2)
-  !   v(:,1) = -1.0 * v(:,2)
-  !   p(:,1) = p(:,2)
-  !   rho(:,1) = (rho(:,2)/p(:,2))*p(:,1)
-  !
-  !   ! Outflow
-  !   u(n_x,:) = u(n_x-1,:)
-  !   v(n_x,:) = v(n_x-1,:)
-  !   rho(n_x,:) = (rho(n_x-1,:)/p(n_x-1,:))*p(n_x,:)
-  !   p(n_x,:) = p(n_x-1,:)
-  !   ! rho(n_x,:) = rho(n_x-1,:)
-  !
+  case(2)              ! 3D Reimann
+    q(1,:,:,:)=q(2,:,:,:)
+    q(n_x,:,:,:)=q(n_x-1,:,:,:)
+    ! Y-direction
+    q(:,1,:,:)=q(:,2,:,:)
+    q(:,n_y,:,:)=q(:,n_y-1,:,:)
+
+    !Z-direction
+    ! q(:,:,1,:)=q(:,:,2,:)
+    ! q(:,:,n_z,:)=q(:,:,n_z-1,:)
+
+
+    skipend = 1
+
   case(4)                 ! 2D Viscous shock tube SWBLI
     ! Symmetry
     u(:,n_y,:) = u(:,n_y-1,:)

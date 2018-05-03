@@ -34,18 +34,18 @@ for fil_name in allfiles_sorted:
     data = np.loadtxt(fname)
     Z = np.reshape(data[:,prop+2],(nz,ny,nx))
     X = np.reshape(data[:,0],(nz,ny,nx))
-    Y = np.reshape(data[:,1],(nz,ny,nx))
-
-    Z = Z[0,:,:]
-    X = X[0,:,:]
-    Y = Y[0,:,:]
+    Y = np.reshape(data[:,2],(nz,ny,nx))
+    yval = 0
+    Z = Z[::-1,yval,:]
+    X = X[::-1,yval,:]
+    Y = Y[:,yval,:]
 
     plt.title(proprty,loc='left')
     plt.title(fil_name)
     plt.xlabel('x')
     plt.ylabel('y')
-    # plt.contourf(X,Y,Z,50)
-    plt.contour(X,Y,Z,50,cmap=plt.cm.gray)
+    plt.contour(X,Y,Z,30,cmap=plt.cm.gray)
+    plt.contourf(X,Y,Z,50)
     plt.colorbar()
     plt.savefig( plot_path + proprty + str(frame_no).zfill(6) +'.png')
     plt.clf()

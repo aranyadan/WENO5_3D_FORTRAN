@@ -2,7 +2,7 @@ subroutine IC3DReimann(Prim,q,n_x,n_y,n_z,x,y,z,case_id,tend,Re,Pr,Suth,Cv)
   implicit none
   integer :: n_x,n_y,n_z,mid_x,mid_y,mid_z,i,j, case_id,k
   real :: delx,dely,gamma=1.4,tend,cfl,Re,Suth,p_ref,rho_ref,&
-          T_ref,R_gas_const=287.0,Cp,Cv,Pr
+          T_ref,R_gas_const=287.0,Cp,Cv,Pr,delta_z,dist
   real, parameter :: PI = 4.0*ATAN(1.0)
   real, dimension(4) :: p,u,v,w,rho
   real,dimension(n_x,n_y,n_z,5) :: Prim,q
@@ -60,25 +60,33 @@ subroutine IC3DReimann(Prim,q,n_x,n_y,n_z,x,y,z,case_id,tend,Re,Pr,Suth,Cv)
     Prim(mid_x+1:n_x, 1:mid_y, : , 4) = p(4)
     Prim(mid_x+1:n_x, 1:mid_y, : , 5) = rho(4)
 
-  ! case (2)              ! SWBLI
-  !   tend = 10
-  !   cfl = 0.6
-  !   p_ref = 101325             ! Reference air pressure (N/m^2)
-  !   rho_ref= 1.225             ! Reference air density (kg/m^3)
-  !   T_ref = p_ref / (rho_ref * R_gas_const);
-  !   Cp = gamma * R_gas_const / (gamma-1);
-  !   Cv = Cp - gamma;
-  !   Re = 100.0;
-  !   Suth = 110.4/T_ref;
-  !   Pr = 0.7
-  !   ! Set the primitive variables
-  !   do i=1,n_x
-  !     Prim(i,:,1) = (COS(PI*y(:)))**2
-  !   end do
-  !   Prim(:,:,2) = 0.0
-  !   Prim(:,:,3) = 1.0
-  !   Prim(:,:,4) = 1.0
-
+  case (2)              ! 3D Reimann
+    tend = 0.7
+    cfl = 0.6
+    p_ref = 101325             ! Reference air pressure (N/m^2)
+    rho_ref= 1.225             ! Reference air density (kg/m^3)
+    T_ref = p_ref / (rho_ref * R_gas_const);
+    Cp = gamma * R_gas_const / (gamma-1);
+    Cv = Cp - gamma;
+    Re = 100.0;
+    Suth = 110.4/T_ref;
+    Pr = 0.7
+    ! Set the primitive variables
+    Prim(:,:,:,1:3) = 0.0
+    Prim(:,:,:,4:5) = 1.0
+    mid_x =0*(n_x+1)/2
+    mid_y =0*(n_y+1)/2
+    delta_z = z(n_z) - z(1)
+    do i=1,n_x
+      do j=1,n_y
+        do k=1,n_z
+          dist = (x(i))**2 + (y(j))**2 + (z(k)-0.4*delta_z)**2
+          if (dist**0.5 < 0.2*delta_z) then
+            Prim(i,j,k,4) = 5.0
+          endif
+        end do
+      end do
+    end do
 
   ! case(3)               ! Flat plat boundary layer
   !   tend = 30
