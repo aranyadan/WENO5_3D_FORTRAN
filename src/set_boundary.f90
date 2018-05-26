@@ -27,17 +27,23 @@ subroutine set_boundary(q,x,y,z,n_x,n_y,n_z,Cv,case_id)
 
   case(2)              ! 3D Reimann
     q(1,:,:,:)=q(2,:,:,:)
-    q(n_x,:,:,:)=q(n_x-1,:,:,:)
+    ! q(n_x,:,:,:)=q(n_x-1,:,:,:)
     ! Y-direction
     q(:,1,:,:)=q(:,2,:,:)
-    q(:,n_y,:,:)=q(:,n_y-1,:,:)
+    ! q(:,n_y,:,:)=q(:,n_y-1,:,:)
+
+    call primitives(q,n_x,n_y,n_z,rho,u,v,w,E,p,a)
+    ! u(1,:,:) = 0.0
+    ! v(:,1,:) = 0.0
+    w(:,:,1) = 0.0
+    w(:,:,n_z) = 0.0
 
     !Z-direction
     ! q(:,:,1,:)=q(:,:,2,:)
     ! q(:,:,n_z,:)=q(:,:,n_z-1,:)
 
 
-    skipend = 1
+    ! skipend = 1
 
   case(4)                 ! 2D Viscous shock tube SWBLI
     ! Symmetry

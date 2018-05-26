@@ -8,7 +8,7 @@ program main
   use transform
   implicit none
   ! Plot values: 1=u vel, 2=v vel, 3=w vel, 4=p, 5=rho
-  integer,parameter :: n_x = 37, n_y = 37, n_z = 25, SAVE=1,PLOT=1,PLOTVAL=4,VIDEO=0, QUIET=0, VISCOUS=0
+  integer,parameter :: n_x = 75, n_y = 75, n_z = 50, SAVE=1,PLOT=1,PLOTVAL=4,VIDEO=0, QUIET=0, VISCOUS=0
   real, parameter :: starty = 0, endy = 1.5, startx = 0, endx = 1.5, startz = 0, endz = 1.0, gamma = 1.4
   real :: delx,dely,delz,dt,cfl,tend,lambda_0,t,dt_0,lambda,delta,Re,Suth,residual,Cv
   real :: Pr
