@@ -70,7 +70,7 @@ program main
     qo = q
 
     ! RK 1st step
-    call build_flux(q,n_x,n_y,n_z,delx,dely,delz,Re,Pr,Suth,F,G,H)
+    call build_flux(q,n_x,n_y,n_z,delx,dely,delz,Re,Pr,Suth,F,G,H,VISCOUS)
     call WENO53d(lambda,F,q,n_x,n_y,n_z,hp,hn,1)
     dF = ((hp - cshift(hp,-1,1)) + (hn - cshift(hn,-1,1)))/delx
     call WENO53d(lambda,G,q,n_x,n_y,n_z,hp,hn,2)
@@ -84,7 +84,7 @@ program main
     call set_boundary(q,x,y,z,n_x,n_y,n_z,Cv,case_id)
 
     ! RK 2nd step
-    call build_flux(q,n_x,n_y,n_z,delx,dely,delz,Re,Pr,Suth,F,G,H)
+    call build_flux(q,n_x,n_y,n_z,delx,dely,delz,Re,Pr,Suth,F,G,H,VISCOUS)
     call WENO53d(lambda,F,q,n_x,n_y,n_z,hp,hn,1)
     dF = ((hp - cshift(hp,-1,1)) + (hn - cshift(hn,-1,1)))/delx
     call WENO53d(lambda,G,q,n_x,n_y,n_z,hp,hn,2)
@@ -98,7 +98,7 @@ program main
     call set_boundary(q,x,y,z,n_x,n_y,n_z,Cv,case_id)
 
     ! RK 3rd step
-    call build_flux(q,n_x,n_y,n_z,delx,dely,delz,Re,Pr,Suth,F,G,H)
+    call build_flux(q,n_x,n_y,n_z,delx,dely,delz,Re,Pr,Suth,F,G,H,VISCOUS)
     call WENO53d(lambda,F,q,n_x,n_y,n_z,hp,hn,1)
     dF = ((hp - cshift(hp,-1,1)) + (hn - cshift(hn,-1,1)))/delx
     call WENO53d(lambda,G,q,n_x,n_y,n_z,hp,hn,2)
