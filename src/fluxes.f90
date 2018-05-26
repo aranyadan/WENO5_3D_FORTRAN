@@ -27,22 +27,22 @@ subroutine build_flux(q,n_x,n_y,n_z,delx,dely,delz,Re,Pr,Suth,F,G,H,VISCOUS)
   endif
 
   F(:,:,:,1) = rho*u
-  F(:,:,:,2) = rho*u*u + p !- tauxx
-  F(:,:,:,3) = rho*u*v !- tauxy
-  F(:,:,:,4) = rho*u*w !- tauxz
-  F(:,:,:,5) = rho*u*E + p*u !- u*tauxx - v*tauxy - w*tauxz - q_x
+  F(:,:,:,2) = rho*u*u + p + (- tauxx)*VISCOUS
+  F(:,:,:,3) = rho*u*v + (- tauxy)*VISCOUS
+  F(:,:,:,4) = rho*u*w + (- tauxz)*VISCOUS
+  F(:,:,:,5) = rho*u*E + p*u + (- u*tauxx - v*tauxy - w*tauxz - q_x)*VISCOUS
 
   G(:,:,:,1) = rho*v
-  G(:,:,:,2) = rho*v*u !- tauxy
-  G(:,:,:,3) = rho*v*v + p !- tauyy
-  G(:,:,:,4) = rho*v*w !-tauyz
-  G(:,:,:,5) = rho*v*E + p*v !- u*tauxy - v*tauyy - w*tauyz - q_y
+  G(:,:,:,2) = rho*v*u + (- tauxy)*VISCOUS
+  G(:,:,:,3) = rho*v*v + p + (- tauyy)*VISCOUS
+  G(:,:,:,4) = rho*v*w + (-tauyz)*VISCOUS
+  G(:,:,:,5) = rho*v*E + p*v + (- u*tauxy - v*tauyy - w*tauyz - q_y)*VISCOUS
 
   H(:,:,:,1) = rho*w
-  H(:,:,:,2) = rho*w*u !- tauxz
-  H(:,:,:,3) = rho*w*v !- tauyz
-  H(:,:,:,4) = rho*w*w + p !- tauzz
-  H(:,:,:,5) = rho*w*E + p*w !- u*tauxz - v*tauyz - w*tauzz - q_z
+  H(:,:,:,2) = rho*w*u + (- tauxz)*VISCOUS
+  H(:,:,:,3) = rho*w*v + (- tauyz)*VISCOUS
+  H(:,:,:,4) = rho*w*w + p + (- tauzz)*VISCOUS
+  H(:,:,:,5) = rho*w*E + p*w + (- u*tauxz - v*tauyz - w*tauzz - q_z)*VISCOUS
 
 
   ! write(*,*)MAXVAL(MAXVAL(tauxx(:,:),1))

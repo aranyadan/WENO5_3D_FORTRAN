@@ -1,6 +1,6 @@
-subroutine IC3DReimann(Prim,q,n_x,n_y,n_z,x,y,z,case_id,tend,Re,Pr,Suth,Cv)
+subroutine IC3DReimann(Prim,q,n_x,n_y,n_z,x,y,z,case_id,tend,Re,Pr,Suth,Cv,VISCOUS)
   implicit none
-  integer :: n_x,n_y,n_z,mid_x,mid_y,mid_z,i,j, case_id,k
+  integer :: n_x,n_y,n_z,mid_x,mid_y,mid_z,i,j, case_id,k,VISCOUS
   real :: delx,dely,gamma=1.4,tend,cfl,Re,Suth,p_ref,rho_ref,&
           T_ref,R_gas_const=287.0,Cp,Cv,Pr,delta_z,dist
   real, parameter :: PI = 4.0*ATAN(1.0)
@@ -10,9 +10,12 @@ subroutine IC3DReimann(Prim,q,n_x,n_y,n_z,x,y,z,case_id,tend,Re,Pr,Suth,Cv)
   real, dimension(n_y) :: y
   real, dimension(n_z) :: z
   real,dimension(n_x,n_y,n_z) :: E
-  select case (case_id)
 
+  VISCOUS=1
+
+  select case (case_id)
   case (1)              ! Reimann Problem
+    VISCOUS=0
     p =   (/ 1.5, 0.3   , 0.029, 0.3    /)
     rho = (/ 1.5, 0.5323, 0.138, 0.5323 /)
     u =   (/ 0.0, 1.206 , 1.206, 0.0    /)
@@ -61,6 +64,7 @@ subroutine IC3DReimann(Prim,q,n_x,n_y,n_z,x,y,z,case_id,tend,Re,Pr,Suth,Cv)
     Prim(mid_x+1:n_x, 1:mid_y, : , 5) = rho(4)
 
   case (2)              ! 3D Reimann
+    VISCOUS=0
     tend = 0.7
     cfl = 0.6
     p_ref = 101325             ! Reference air pressure (N/m^2)

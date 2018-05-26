@@ -8,11 +8,11 @@ program main
   use transform
   implicit none
   ! Plot values: 1=u vel, 2=v vel, 3=w vel, 4=p, 5=rho
-  integer,parameter :: n_x = 75, n_y = 75, n_z = 50, SAVE=1,PLOT=1,PLOTVAL=4,VIDEO=0, QUIET=0, VISCOUS=0
+  integer,parameter :: n_x = 51, n_y = 51, n_z = 31, SAVE=1,PLOT=1,PLOTVAL=4,VIDEO=0, QUIET=0
   real, parameter :: starty = 0, endy = 1.5, startx = 0, endx = 1.5, startz = 0, endz = 1.0, gamma = 1.4
   real :: delx,dely,delz,dt,cfl,tend,lambda_0,t,dt_0,lambda,delta,Re,Suth,residual,Cv
   real :: Pr
-  integer :: I,id=0,check,case_id=2,skips=25
+  integer :: I,id=0,check,case_id=2,skips=25, VISCOUS=0
   real,dimension(n_x,n_y,n_z) :: a_0,p,rho,u,v,w,E,a                             ! Stores x coordinate of the points, primitive values
   real,dimension(n_x) :: x
   real,dimension(n_y) :: y
@@ -36,7 +36,7 @@ program main
     print*,'Setting initial conditions'
   end if
 
-  call IC3DReimann(Prim_0,q_0,n_x,n_y,n_z,x,y,z,case_id,tend,Re,Pr,Suth,Cv)
+  call IC3DReimann(Prim_0,q_0,n_x,n_y,n_z,x,y,z,case_id,tend,Re,Pr,Suth,Cv,VISCOUS)
   call set_boundary(q_0,x,y,z,n_x,n_y,n_z,Cv,case_id)
   if(QUIET==0) then
     print*,'Initial conditions Set'
